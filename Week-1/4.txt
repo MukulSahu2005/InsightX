@@ -1,0 +1,39 @@
+# Ran on MYSQL workbench
+
+create table students(
+  SId int primary key ,
+  Name varchar(50),
+  Age int ,
+  Department varchar(50),
+  Marks int
+);
+insert into students values
+  (1, "Mukul", 20, "CSE", 95),
+  (2, "Ram", 20, "mech", 88),
+  (3, 'Amit', 22, 'CSE', 90),
+  (4, 'Sneha', 20, 'ME', 72),
+  (5, 'Arjun', 21, 'CSE', 44);
+
+select * from students;
+
+select * from students 
+where marks>=90;
+
+select Department,count(*) as totalStudents , AVG(marks) as averageMarks from students
+group by Department;
+
+select Department, AVG(marks) as averageMarks from students
+group by Department
+having averageMarks>75;
+
+select * from students
+order by marks DESC ;
+
+Update students
+set Marks = Marks+2 
+where Department="CSE";
+select * from students ;
+
+delete from students
+where SID=4 ;
+select* from students ;

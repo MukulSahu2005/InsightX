@@ -1,0 +1,58 @@
+
+CREATE TABLE sales (
+    employee_id INT,
+    employee_name VARCHAR(50),
+    department VARCHAR(50),
+    sales INT
+);
+INSERT INTO sales (employee_id, employee_name, department, sales) VALUES
+(1, 'Rahul', 'Electronics', 5000),
+(2, 'Aman', 'Electronics', 7000),
+(3, 'Priya', 'Clothing', 6000),
+(4, 'Neha', 'Clothing', 8000),
+(5, 'Rohit', 'Electronics', 6500),
+(6, 'Simran', 'Clothing', 7500),
+(7, 'Arjun', 'Furniture', 4000),
+(8, 'Meera', 'Furniture', 9000);
+
+SELECT * FROM sales;
+
+WITH employee_sales AS (
+    SELECT 
+        employee_id,
+        employee_name,
+        department,
+        SUM(sales) AS total_sales
+    FROM sales
+    GROUP BY employee_id, employee_name, department
+)
+
+SELECT *
+FROM employee_sales;
+
+SELECT
+    employee_id,
+    employee_name,
+    department,
+    total_sales,
+    ROW_NUMBER() OVER (
+        PARTITION BY department
+        ORDER BY total_sales DESC
+    ) AS rank_in_department
+FROM employee_sales;
+
+
+SELECT *
+FROM (
+    SELECT
+        employee_id,
+        employee_name,
+        department,
+        total_sales,
+        ROW_NUMBER() OVER (
+            PARTITION BY department
+            ORDER BY total_sales DESC
+        ) AS rank_in_department
+    FROM employee_sales
+) ranked_employees
+WHERE rank_in_department = 1;
